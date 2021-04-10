@@ -71,7 +71,6 @@ function Cell(x, y, color, figureId, obsticles, state = STATES.FALLING) {
   };
 
   this.destroy = () => {
-    // TODO: make sure this object no longer exists in the memory.
-    //       maybe it will be better to have this kind of function in Figure object
+      this.deRender();
   }
 }
