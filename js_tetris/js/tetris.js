@@ -93,7 +93,7 @@ function Tetris(state = GAME_STATES.PAUSED) {
       let figure = getCurrentFigure();
       getCurrentFigure().move(DOWN);
       destroyLine();
-      checkForGameOver(figure); // TODO
+      checkForGameOver(figure);
     }, gameInverval);
   };
 }
