@@ -12,11 +12,13 @@ function Cell(x, y, color, figureId, obsticles, state = STATES.FALLING) {
   this.obsticles = obsticles;
 
   // Private methods
-  const hasObsticlesFor = (direction) => {
+  const hasObsticlesFor = (direction, rotate_x, rotate_y) => {
     const dirrections = {
       [DOWN]:  { x: this.x,     y: this.y - 1 },
       [RIGHT]: { x: this.x + 1, y: this.y },
       [LEFT]:  { x: this.x - 1, y: this.y },
+      [ROTATE_CLOCKWISE]: {x: rotate_x, y: rotate_y},
+      [ROTATE_COUNTERCLOCKWISE]: {x: rotate_x, y: rotate_y}
     };
     const {x, y} = dirrections[direction];
 
@@ -25,41 +27,47 @@ function Cell(x, y, color, figureId, obsticles, state = STATES.FALLING) {
     );
   }
 
-  const willReachBoarders = (direction) => {
+  const willReachBoarders = (direction, rotate_x, rotate_y) => {
     const dirrections = {
       [DOWN]:  this.y - 1 < 0,
-      [RIGHT]: this.x + 1 > PLAYGROUND_WIDTH - 1, // TODO: looks strange, no? +1 -1 :)
+      [RIGHT]: this.x + 1 > PLAYGROUND_WIDTH - 1,
       [LEFT]:  this.x - 1 < 0,
+      [ROTATE_CLOCKWISE]: (rotate_x > PLAYGROUND_WIDTH - 1) || (rotate_x < 0) || (rotate_y < 0),
+      [ROTATE_COUNTERCLOCKWISE]: (rotate_x > PLAYGROUND_WIDTH - 1) || (rotate_x < 0) || (rotate_y < 0)
     };
 
     return dirrections[direction]
   }
 
   // Public methods
-  this.validFor = (direction) =>
-    !hasObsticlesFor(direction) && !willReachBoarders(direction);
+  this.validFor = (direction, rotate_x=null, rotate_y=null) =>
+    !hasObsticlesFor(direction, rotate_x, rotate_y) && !willReachBoarders(direction, rotate_x, rotate_y);
 
-  // TODO: deRender and render are identical. it's ossible to refactor.
-  //       also, this seems to be more of playground class responsibility?
   this.deRender = () =>
-    helperMethods.styleCell(this.x, this.y, DEFAULT_COLOR);
+    rendering(DEFAULT_COLOR);
 
   this.render = () =>
-    helperMethods.styleCell(this.x, this.y, this.color);
+    rendering(this.color);
+  
+  const rendering = (color) => helperMethods.styleCell(this.x, this.y, color);
 
-  this.moveDown = () => { // TODO: moveDown, moveRight, moveLeft are almost idencial. please refactor
-    this.y--;
+  this.move = (direction, rotate_x=null, rotate_y=null) => {
+    switch(direction){
+      case DOWN:
+        this.y--;
+        break;
+      case RIGHT:
+        this.x++;
+        break;
+      case LEFT:
+        this.x--;
+        break;
+      case ROTATE_CLOCKWISE:
+      case ROTATE_COUNTERCLOCKWISE:
+         this.x = rotate_x;
+         this.y = rotate_y;
+    }
     this.render();
-  };
-
-  this.moveRight = () => {
-    this.x++;
-    this.render()
-  };
-
-  this.moveLeft = () => {
-    this.x--;
-    this.render()
   };
 
   this.destroy = () => {
