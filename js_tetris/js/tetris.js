@@ -63,10 +63,15 @@ function Tetris(state = GAME_STATES.PAUSED) {
         console.log(figure.cells.length)
       }
     }
+    for (row of rows){
+      for (figure of this.figures){
+        figure.state === STATES.STATIC && figure.move(DOWN)
+      }
+    }
   };
 
   const checkForGameOver = () => {
-    // TODO
+    //getCurrentFigure()
   };
 
   // public methods
@@ -81,7 +86,7 @@ function Tetris(state = GAME_STATES.PAUSED) {
         return;
       }
       getCurrentFigure().move(DOWN);
-      destroyLine(); // TODO: not sure where this method shoud be. Maybe in moveDown?
+      destroyLine();
       checkForGameOver(); // TODO
     }, INTERVAL);
   };
