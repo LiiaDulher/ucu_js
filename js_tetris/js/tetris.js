@@ -1,10 +1,10 @@
 function Tetris(state = GAME_STATES.PAUSED) {
   // Private properties
   const playground = PlaygroundFactory.getInstance();
-  let gameInverval = null; // TODO: will need to use this for gameover event
+  let gameInverval = INTERVAL;
 
   // public properties
-  this.figures = []; // TODO: seems to not be accesable outside
+  this.figures = [];
 
   // Private methods
   const addFigure = () => {
@@ -20,9 +20,11 @@ function Tetris(state = GAME_STATES.PAUSED) {
     if (keyCode === PAUSE){
       if (this.state === GAME_STATES.PAUSED){
         this.state = GAME_STATES.PLAYING;
+        console.log('GAME CONTINUES');
         return;
       }
       this.state = GAME_STATES.PAUSED;
+      console.log('GAME PAUSED');
       return;
     }
     if (this.state === GAME_STATES.PLAYING){
@@ -42,7 +44,6 @@ function Tetris(state = GAME_STATES.PAUSED) {
       }
       if (fullRow){
         rows.push(rowIndex);
-        console.log(rowIndex);
       }
     }
     if (rows.length === 0){
@@ -60,7 +61,6 @@ function Tetris(state = GAME_STATES.PAUSED) {
       destroyed_cells.sort()
       for (let i=0; i< destroyed_cells.length; i++){
         figure.cells.splice(destroyed_cells[i]-i, 1)
-        console.log(figure.cells.length)
       }
     }
     for (row of rows){
@@ -70,7 +70,12 @@ function Tetris(state = GAME_STATES.PAUSED) {
     }
   };
 
-  const checkForGameOver = () => {
+  const checkForGameOver = (figure) => {
+    if (figure.state === STATES.STATIC && getCurrentFigure().check()){
+        this.state = GAME_STATES.GAMEOVER;
+        gameInverval = null;
+        console.log('GAME OVER');
+    }
     //getCurrentFigure()
   };
 
@@ -85,10 +90,11 @@ function Tetris(state = GAME_STATES.PAUSED) {
       if (this.state === GAME_STATES.PAUSED){
         return;
       }
+      let figure = getCurrentFigure();
       getCurrentFigure().move(DOWN);
       destroyLine();
-      checkForGameOver(); // TODO
-    }, INTERVAL);
+      checkForGameOver(figure); // TODO
+    }, gameInverval);
   };
 }
 
