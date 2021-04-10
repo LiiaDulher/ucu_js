@@ -31,7 +31,38 @@ function Tetris(state = GAME_STATES.PAUSED) {
   }
 
   const destroyLine = () => {
-    // TODO
+    let rows = [];
+    for (let rowIndex = playground.box.length - 1; rowIndex >= 0; rowIndex--){
+      let fullRow = true;
+      for (let cellIndex = 0; cellIndex < playground.box[rowIndex].length; cellIndex++){
+        let color = helperMethods.getCell(cellIndex, rowIndex).getAttribute('class').split(' ');
+        if (color.length === 1 || color[1] === DEFAULT_COLOR){
+          fullRow = false;
+        }
+      }
+      if (fullRow){
+        rows.push(rowIndex);
+        console.log(rowIndex);
+      }
+    }
+    if (rows.length === 0){
+      return;
+    }
+    const deleted_cell = (cell) => {return rows.includes(cell.y)};
+    for (figure of this.figures){
+      let destroyed_cells = [];
+      for (let i=0; i< figure.cells.length; i++){
+        if (deleted_cell(figure.cells[i])){
+          figure.cells[i].destroy();
+          destroyed_cells.push(i);
+        }
+      }
+      destroyed_cells.sort()
+      for (let i=0; i< destroyed_cells.length; i++){
+        figure.cells.splice(destroyed_cells[i]-i, 1)
+        console.log(figure.cells.length)
+      }
+    }
   };
 
   const checkForGameOver = () => {
@@ -57,4 +88,4 @@ function Tetris(state = GAME_STATES.PAUSED) {
 }
 
 const tetris = new Tetris();
-tetris.play()
+tetris.play();
