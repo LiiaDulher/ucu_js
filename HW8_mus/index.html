@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <link rel="stylesheet" href="./css/styles.css">
+    </head>
+    <body id="Museum">
+        <script src="./js/html_api_requests.js"></script>
+        <script src="./js/view.js"></script>
+        <script src="./js/data_processing.js"></script>
+        <script>
+            get_museum_departments().then(create_departments_droplist);
+            get_collection_objects(1).then(get_ten_objects_with_images).then(display_objects);
+        </script>
+    </body>
+</html>
