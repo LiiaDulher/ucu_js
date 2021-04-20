@@ -1,1 +1,54 @@
+#objectsImagesSection ul li p{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    
+    font-size: 1em;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
+
+#objectsImagesSection h2 {
+    font-size: 1.5em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+#objectsImagesSection ul li{
+  display: inline-block;
+  width: 25%;
+
+  margin-left: 5%;
+}
+
+#objectsImagesSection ul{
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 1em;
+  margin-inline-end: 1em;
+  padding-inline-start: 40px;
+}
+
+#objectsImagesSection img{
+  width: 100%;
+  height: auto;
+}
+
+
+#objectsImagesSection ul li h2{
+margin-top: 15px;
+}
+
+#objectsImagesSection ul li p{
+margin-top: 10px;
+margin-bottom: 10px;
+
+font-size: 1em;
+
+display: flex;
+align-items: center;
+justify-content: center;
+}
